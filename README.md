@@ -1,2 +1,3 @@
 # Chiachi
-Repo for Amanda Chiachi
+Repo for Amanda Chiachis Assignments in BIOL551: Computer Modeling
+[Week 2](Week_2)
