@@ -1,4 +1,4 @@
-## This is my first script. I am learning how to importa data in the appropriate folder
+## This is my first script. I am learning how to import data in the appropriate folder
 ## Created by: Amanda Chiachi
 ## Created on: February 3rd 2021
 ##### 
