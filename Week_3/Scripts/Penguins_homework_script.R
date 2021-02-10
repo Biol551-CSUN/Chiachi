@@ -15,6 +15,8 @@ glimpse(penguins)
 head(penguins)
 tail(penguins)
 
+###Data Analysis####
+
 pal <- pnw_palette("Starfish", 3, type = "discrete")
 
 ggplot(data = penguins, #bring in my penguin data
