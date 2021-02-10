@@ -39,15 +39,16 @@ ggplot(data=penguins,
                                   color = "darkgreen"), 
         panel.background = element_rect(fill = "lightgrey"), 
         legend.position = "top")+ # makes labels text larger
-  scale_x_continuous(breaks = c(14, 17, 21), 
-                     labels = c("low", "medium", "high"))
+  scale_x_continuous(breaks = c(14, 17, 21), #scale_x_continuous(breaks, limits... = c(14, 17, 21))
+                     labels = c("low", "medium", "high"))+
+ggsave(here("Week_3", "Output", "penguin1.png"), 
+            width = 7, height = 5)
 
-ggsave(here("Week_3", "Output", "penguin.png"))
-#scale_x_continuous(breaks, limits... = c(14, 17, 21))                 
-#we are making a vector that goes from 0 to 20 (c means concatanate)
+
+                 
+
 
 praise()
-
 
 ?geom_smooth
 ?scale_x_continuous
