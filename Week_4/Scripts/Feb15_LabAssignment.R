@@ -13,20 +13,21 @@ library(PNWColors)
 # island, and sex without any NAs
 # (its own data frame)
 
-pal <- pnw_palette("Sunset", 3, type = "discrete")
-
 Mean_Var_Penguins<-
   penguins %>%
   drop_na(species, island, sex) %>% # drop all NAs in data for species, island and sex
   group_by(species, island, sex) %>% # group by species, island and sex
   summarise(mean_body_mass = mean(body_mass_g), # make new columns for mean body mass and variance 
-            variance_body_mass = var(body_mass_g))
+            variance_body_mass = var(body_mass_g))%>%
+  view()
 
 # 2. filters out (i.e. excludes) male penguins, then calculates 
 # the log body mass, then selects only the columns for species, 
 # island, sex, and log body mass, then use these data to make any plot.
 # make sure the plot has clean and clear labels and follows best practices. 
 # save the plot in the correct output folder. 
+
+pal <- pnw_palette("Sunset", 3, type = "discrete")
 
 Male_Bodymass<-
   penguins %>%
