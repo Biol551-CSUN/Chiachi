@@ -17,6 +17,7 @@ library(palmerpenguins)
 glimpse(penguins)
 
 # use filter to extract outlier (within a certain amount)
+# this is the function that you use to subset rows by some criterion 
 # filter out only the females 
 # if you are using a number, you dont use quotes
 # make sure to use two equal signs
