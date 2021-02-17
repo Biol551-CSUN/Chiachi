@@ -15,6 +15,7 @@ glimpse(ChemData)
 
 pal <- pnw_palette("Cascades", 3, type = "discrete")
 
+####Analyze Data####
 ChemData_clean<-ChemData %>% #create new dataset 
   filter(complete.cases(.)) %>% #remove all of the NAs
   separate(col = Tide_time, # separate the Tide_time column into appropriate columns for analysis 
@@ -30,6 +31,7 @@ ChemData_clean<-ChemData %>% #create new dataset
             sd_vals = sd(Values, na.rm = TRUE)) %>% #standard deviation 
 write_csv(here("Week_4", "Output", "summary_homework.csv")) #export csv to the correct folder
 
+###Plot Data #####
 ChemData_clean %>% #bring in data
   ggplot(aes(x = Variables, # x axis is the variables (phosphate, salinity, silicate)
              y = mean_vals,  # y axis is the mean_values
