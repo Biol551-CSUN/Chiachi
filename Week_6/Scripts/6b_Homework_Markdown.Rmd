@@ -1,0 +1,87 @@
+---
+title: "6b_Homework_Markdown"
+author: "Amanda"
+date: "3/3/2021"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning=FALSE,
+                      message=FALSE, 
+                      fig.path="../Output/")
+```
+
+# Load Libraries 
+**We will be using the libraries:**  
+- _tidyverse_   
+- _here_    
+- _PNWColors_    
+- _kableExtra_  
+```{r}
+library(tidyverse)
+library(here)
+library(PNWColors)
+library(kableExtra)
+```
+
+# Load the Data 
+I will be using chemical data from Mauna Lua
+```{r}
+ChemData<-read_csv(here("Week_6","Data", "chemicaldata_maunalua.csv"))
+pal <- pnw_palette("Lake", 3, type = "discrete")
+```
+
+# Clean the data
+```{r}
+ChemData_clean<-ChemData %>%  #create new dataset 
+  filter(complete.cases(.)) %>% #remove all of the NAs
+  separate(col = Tide_time,  #separate the Tide_time column into appropriate columns for analysis 
+           into = c("Tide", "Time"), #label the colums "Tide" and "Time"
+           sep = "_",  #separate by _
+           remove = TRUE) %>%  #remove the original file 
+pivot_longer(cols = Salinity:Silicate, # separate the data between salinity and silicates
+               names_to = "Variables",  # combine this data into one column called variables
+               values_to = "Values") %>% #  
+  group_by(Variables, Site, Time, Tide) # convert to long format 
+view(ChemData_clean)
+```
+
+# Plot the data 
+```{r ChemFig, fig.align='center', fig.cap="Figure 1. Plot of Nutrients during High and Low Tide."}
+ChemData_figure<- ChemData_clean %>% # pull data set to make the figure 
+  ggplot(aes(x = Variables, # format x axis
+             y = Values, # format y axis
+             color = Variables))+ # make each variable a different color
+  geom_boxplot() + # first, make a boxplot
+  geom_jitter(alpha=0.5, # add jitterplot 
+              position = position_jitterdodge( 
+              jitter.width = NULL, 
+              jitter.height = 0, 
+              dodge.width = 0.75
+              ))+
+  labs(title = "Average Nutrient Levels in High vs. Low tide", # title your plot
+       x = "", # remove the x axis label
+       y = "Values (umol/L)")+ # re-name the y axis (used the data dictionary to find the units)
+  theme_light()+ # change theme, remove background color etc.
+  theme(axis.title = element_text(size = 15),
+        plot.title = element_text(hjust = 0.5))+ # change axis title text size 
+  scale_color_manual(values = pal)+
+  facet_wrap(~Tide, ncol = 3) # use the pnw color pallete 
+  
+ChemData_figure
+```
+
+# Make a table 
+```{r ChemTable, fig.cap="Table 2. Mean and SD Values, grouped by Variables, Site and Time"}
+ChemData_clean %>% #list data 
+  group_by(Variables, Site, Time) %>% # list the names of the columns
+  summarise(mean_vals = mean(Values, na.rm = TRUE), # take mean of the values
+            sd_vals = sd(Values, na.rm = TRUE)) %>% # take the sd of the values
+  kbl() %>% # this creates a formatted table 
+  kable_material(c("striped", "hover")) # alternate "striped" rows
+```

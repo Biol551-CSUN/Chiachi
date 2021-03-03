@@ -22,6 +22,7 @@ Today we are going to work with the penguin data to learn *RMarkdown*.
 library(tidyverse)
 library(palmerpenguins)
 library(here)
+library(ymlthis)
 ```
 
 # Inspect the data
