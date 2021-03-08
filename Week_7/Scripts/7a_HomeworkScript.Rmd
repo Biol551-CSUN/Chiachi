@@ -1,0 +1,65 @@
+---
+title: "7a_Homework_Markdown"
+author: "Amanda"
+date: "3/8/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: yeti
+---
+#  Plotting Meteorites on the World Map  
+**Today I am going to make a world map and plot all known meteorite locations.**
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning=FALSE,
+                      message=FALSE, 
+                      fig.path="../Output/")
+```
+
+#  1. Load Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(maps)
+library(mapdata)
+library(mapproj)
+```
+
+#  2. Load the Data  
+*We are looking at Meteorites data from Tidy Tuesday*
+```{r}
+meteorites <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-11/meteorites.csv") # bring in the data from tidy tuesday meteorites
+world<-map_data("world") # bring in the world data from our library "maps"
+```
+#  3. Organize the data
+```{r}
+meteorites_clean<-meteorites %>% # bring in the data
+  filter(year == 1990:2013) # filter meteorites from 1990 - 2013
+view(meteorites_clean) # view it to make sure it worked
+```
+
+#  4. Make a plot 
+```{r MetoriteMap, fig.align='center', fig.cap="Figure 1. Map of Meteorites around the world years 1990 - 2013"}
+ggplot()+ # 
+  geom_polygon(data = world, aes(x = long, # make a map using the world data
+                                 y = lat, 
+                                 group = group, # don't forget the group to make sure it aligns with data
+                                 fill = region),  # make each region a different color 
+                                 color = "black")+ # black lines indicating outline of map
+  geom_point(data = meteorites_clean, # add a geom_point plot to include the meteorites data on top of the world map 
+             aes(x = long, 
+                 y = lat,
+                 size = mass))+ # the size of the dots are equal to the mass of each meteorite 
+  coord_map(projection = "mercator",  # use normal "mercator" to view the entire world map 
+            xlim = c(-180, 180))+ # use even coordinates
+  guides(fill = FALSE)+ # remove the guides to keep the plot clean 
+  theme_void()+ #remove the coordiantes from the x and y axis (long and lat)
+  theme(panel.background = element_rect(fill = "white"), 
+        plot.title = element_text(hjust = 0.5))+ # make the background white
+  labs(size = "Mass of Meteorites (G)", 
+       title = "Map of Meteorites Found Around the World (1990 - 2013)") + # rename the label with the correct unit of measurement 
+  ggsave(here("Week_7", "Output", "MeteoritesMap_HW.pdf")) #save the plot
+```
+

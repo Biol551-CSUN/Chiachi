@@ -16,12 +16,14 @@ knitr::opts_chunk$set(echo = TRUE,
                       fig.path="../Output/")
 ```
 
-# Load Libraries 
-**We will be using the libraries:**  
-- _tidyverse_   
-- _here_    
-- _PNWColors_    
-- _kableExtra_  
+# Load Libraries
+
+**We will be using the libraries:**\
+- *tidyverse*\
+- *here*\
+- *PNWColors*\
+- *kableExtra*
+
 ```{r}
 library(tidyverse)
 library(here)
@@ -29,14 +31,17 @@ library(PNWColors)
 library(kableExtra)
 ```
 
-# Load the Data 
+# Load the Data
+
 I will be using chemical data from Mauna Lua
+
 ```{r}
 ChemData<-read_csv(here("Week_6","Data", "chemicaldata_maunalua.csv"))
 pal <- pnw_palette("Lake", 3, type = "discrete")
 ```
 
 # Clean the data
+
 ```{r}
 ChemData_clean<-ChemData %>%  #create new dataset 
   filter(complete.cases(.)) %>% #remove all of the NAs
@@ -51,7 +56,8 @@ pivot_longer(cols = Salinity:Silicate, # separate the data between salinity and 
 view(ChemData_clean)
 ```
 
-# Plot the data 
+# Plot the data
+
 ```{r ChemFig, fig.align='center', fig.cap="Figure 1. Plot of Nutrients during High and Low Tide."}
 ChemData_figure<- ChemData_clean %>% # pull data set to make the figure 
   ggplot(aes(x = Variables, # format x axis
@@ -76,7 +82,8 @@ ChemData_figure<- ChemData_clean %>% # pull data set to make the figure
 ChemData_figure
 ```
 
-# Make a table 
+# Make a table
+
 ```{r ChemTable, fig.cap="Table 2. Mean and SD Values, grouped by Variables, Site and Time"}
 ChemData_clean %>% #list data 
   group_by(Variables, Site, Time) %>% # list the names of the columns
