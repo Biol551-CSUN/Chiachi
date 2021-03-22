@@ -1,0 +1,94 @@
+---
+title: "Lecture8a_Markdown"
+author: "Amanda"
+date: "3/22/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Load Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(patchwork)
+library(ggrepel)
+library(gganimate)
+library(magick)
+library(palmerpenguins)
+```
+
+# Patchwork
+**Lets start with two simple plots from the Palmer penguin dataset**
+```{r}
+# plot 1
+p1<-penguins %>%
+  ggplot(aes(x = body_mass_g, 
+             y = bill_length_mm, 
+             color = species))+
+  geom_point()
+p1
+
+# plot 2
+p2<-penguins %>%
+  ggplot(aes(x = sex, 
+             y = body_mass_g, 
+             color = species))+
+  geom_jitter(width = 0.2)
+p2
+
+p1+p2+ # bring the two plots together using a simple operation (can also do p1/p2)
+plot_layout(guides = 'collect')+
+  plot_annotation(tag_levels = 'A') # add labels (A,B)
+```
+# ggrepel
+```{r}
+View(mtcars)
+ggplot(mtcars, aes(x = wt, 
+                   y = mpg, 
+                   label = rownames(mtcars))) +
+  geom_label_repel() + # repel them <- this is what is important (can also use geom_text_repel)
+  geom_point(color = 'red')
+```
+# gganimate
+```{r}
+penguins %>%
+ggplot(aes(x = body_mass_g, 
+            y = bill_depth_mm, 
+            color = species)) +
+  geom_point() +
+  transition_states(
+     year, # what are we animating by
+     transition_length = 2, #The relative length of the transition.
+     state_length = 1 # The length of the pause between transitions
+   )+
+  ease_aes("sine-in-out") +
+  ggtitle('Year: {closest_state}')+
+  anim_save(here("Week_8","Output","mypengiungif.gif"))
+
+```
+
+# magick
+```{r}
+penguin<-image_read("https://pngimg.com/uploads/penguin/pinguin_PNG9.png") # use png as a default
+penguin
+penguins %>%
+ggplot(aes(x = body_mass_g, 
+            y = bill_depth_mm, 
+            color = species)) +
+  geom_point() +
+  ggsave(here("Week_8","Output","penguinplot.png")) # first, save the plot as a png file 
+
+penplot<-image_read(here("Week_8","output","penguinplot.png"))
+out <- image_composite(penplot, penguin, offset = "+70+30")
+out
+
+# Read in a penguin gif
+pengif<-image_read("https://media3.giphy.com/media/H4uE6w9G1uK4M/giphy.gif")
+outgif <- image_composite(penplot, pengif, gravity = "center")
+animation <- image_animate(outgif, fps = 10, optimize = TRUE)
+animation
+```
+
