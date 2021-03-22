@@ -25,7 +25,7 @@ library(wesanderson)
 
 # Save the Data
 ```{r}
-data("ChickWeight") 
+data("ChickWeight") #taken from r datasets (version 3.6.2)
 ChickData<-ChickWeight
 ChickData%>%
 write_csv(here("Good_Bad_Plot", "Data", "ChickData.csv")) # save the dataset I am using to my folder
