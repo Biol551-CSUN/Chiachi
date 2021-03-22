@@ -1,0 +1,91 @@
+---
+title: "Good_Bad_Markdown"
+author: "Amanda"
+date: "3/21/2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warning=FALSE,
+                      message=FALSE, 
+                      fig.path="../Output/")
+```
+
+# Load Libraries
+```{r}
+library(tidyverse)
+library(here)
+library(wesanderson)
+```
+
+# Save the Data
+```{r}
+data("ChickWeight") 
+ChickData<-ChickWeight
+ChickData%>%
+write_csv(here("Good_Bad_Plot", "Data", "ChickData.csv")) # save the dataset I am using to my folder
+```
+
+# Making a Bad Plot 
+```{r Chick_bad_plot, fig.align='center'}
+Chick_bad_plot <- ChickData %>% # this is the data set we will be using 
+ggplot(aes(x = weight, y = Diet)) + # indicate which variable on each axis
+  geom_boxplot(outlier.colour="pink", outlier.shape=17,
+             outlier.size=20) + # make a boxplot, indicate outlier color, shape and size
+  labs(title = "Weights", # title your plot
+       x = "values", # name x axis
+       y = "food")+ # re-name the y axis 
+  theme(axis.title = element_text(size = 50, color = "red"), # change axis label color and size
+        panel.background = element_rect(fill = "red")) # change the background of the plot
+Chick_bad_plot # wow that is ugly
+```
+**What Makes it a Bad Plot:**   
+- Tasteless (Hard to read and even know what the plot is intended to show)   
+- No description or figure caption of plot anywhere      
+- The background is too bright, makes it difficult to read (too much constrast)      
+- Background has lines (would be cleaner without)   
+- X and Y axis do not have captions or units of measurement   
+- Title is not descriptive and is not centered   
+- The outliers are a random shape and they are too large to correctly view    
+- Without a jitterplot over the boxplots, it is hard to truly read and understand the data 
+
+
+# Making a Good Plot
+
+```{r Chick_good_plot, fig.align='center', fig.cap="Figure 2. An experiment was conducted to measure and compare the effectiveness of various feed supplements on the growth rate of chickens."}
+pal <- wes_palette("Zissou1") # save the appropriate pallet for the plot 
+
+Chick_good_plot <- ChickData %>% #name the plot 
+ggplot(aes(x = Diet, # format x axis # indicate x and y axis data 
+             y = weight, 
+           color = Diet))+ # make each variable a different color
+  geom_boxplot(show.legend = FALSE) + # make a boxplot
+  geom_jitter(show.legend = FALSE, alpha=0.5, # add jitterplot 
+              position = position_jitterdodge( 
+              jitter.width = NULL, 
+              jitter.height = 0, 
+              dodge.width = 0.75))+
+  labs(title = "Chicken Growth after Six Weeks using Four Types of Feed", # title plot something clear and easy to understand
+       x = "Feed Type", # label x axis
+       y = "Weight of Chicken (Grams)", # label y axis (with units)
+       caption = "taken from r datasets (version 3.6.2)")+ # add figure caption for more information on origin of data
+  theme_light()+ # change theme, remove background color etc.
+  theme(axis.title = element_text(size = 13), # change text size
+        plot.title = element_text(hjust = 0.5))+ # center the title
+  scale_color_manual(values = pal) # change the color pallet (this time we are using wes anderson colors)
+Chick_good_plot # better!
+```
+**What Makes it a Good Plot:**   
+- The title is clear and indicates what the plot is showing   
+- Colors make the data "pop"    
+- the X and Y axis are both labeled, and give units when appropriate   
+- there is a figure caption at the bottom giving more information about the plot and data origin      
+- the background is a light color, and there are minimal distraction to the data   
+- the addition of the jitterplot (raw data points) to the plot help the viewer to understand the spread of the data in a clear way   
+- each feed type is indicated by a different color, but the colors are neutral and easy to follow   
+- Not a high level of contrast in the colors, makes it nicer to look at    
