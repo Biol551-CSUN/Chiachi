@@ -1,0 +1,72 @@
+---
+title: "Lecture8b_homework"
+author: "Amanda"
+date: "3/24/2021"
+output:
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    theme: yeti
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      message = TRUE)
+```
+
+# Load Libraries
+```{r, message = FALSE}
+library(tidyverse)
+library(palmerpenguins)
+library(here)
+library(dplyr)
+library(PNWColors) # for the PNW color palette
+```
+
+# Load Data 
+```{r, message = FALSE}
+ChemData<-read_csv(here("Week_8", "Data", "chemicaldata_maunalua.csv"))
+```
+
+# Function that converts celcisus to fahrenheit 
+```{r}
+celcius_to_fahrenheit <- function(temp_C) {temp_F <- (temp_C*(9/5)+32)
+return(temp_F)}
+celcius_to_fahrenheit(12)
+celcius_to_fahrenheit(300)
+```
+
+###Plot Data #####
+```{r}
+ChemPlot<-function(data = ChemData, x, y, Time = "Day"){
+pal<-pnw_palette("Lake",3, type = "discrete")  
+  if(Time == "Day"){
+    data%>%
+      filter(Time == "Day")%>%
+    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+
+      geom_point()+
+      scale_color_manual("Site", values = pal)+
+      theme_bw()
+}
+else{
+  data %>%
+    filter(Time=="Night")
+    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+
+      geom_point()+
+      scale_color_manual("Site", values = pal)+
+      theme_bw()
+}
+}
+```
+
+## Test the Function
+```{r}
+# Plot variations in pH based on zone
+ChemPlot(x = Zone, y = pH)+
+    labs(x = "Zone", 
+       y = "pH Scale")
+# 
+ChemPlot(x = Tide_time, y = Temp_in)+
+    labs(x = "Time of Day)", 
+       y = "Temperature (C)")
+```
