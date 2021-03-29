@@ -99,7 +99,7 @@ if (a > b) { # my question
 }
 f # I get 10
 
-myplot<-function(data = penguins, x, y ,lines=TRUE ){ # add new argument for lines
+myplot<-function(data = penguins, x, y , lines=TRUE){ # add new argument for lines
 pal<-pnw_palette("Lake",3, type = "discrete") # my color palette 
 if(lines==TRUE){
 ggplot(data, aes(x = {{x}}, y = {{y}} , color = island))+

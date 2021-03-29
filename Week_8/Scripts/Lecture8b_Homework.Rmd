@@ -25,36 +25,36 @@ library(PNWColors) # for the PNW color palette
 
 # Load Data 
 ```{r, message = FALSE}
-ChemData<-read_csv(here("Week_8", "Data", "chemicaldata_maunalua.csv"))
+ChemData<-read_csv(here("Week_8", "Data", "chemicaldata_maunalua.csv")) # we are using a past data set from the class
 ```
 
 # Function that converts celcisus to fahrenheit 
 ```{r}
-celcius_to_fahrenheit <- function(temp_C) {temp_F <- (temp_C*(9/5)+32)
-return(temp_F)}
-celcius_to_fahrenheit(12)
-celcius_to_fahrenheit(300)
+celcius_to_fahrenheit <- function(temp_C) {temp_F <- (temp_C*(9/5)+32) # name the function and give it an equation 
+return(temp_F)} # return to F 
+celcius_to_fahrenheit(12) # test
+celcius_to_fahrenheit(300) # test
 ```
 
 ###Plot Data #####
 ```{r}
-ChemPlot<-function(data = ChemData, x, y, Time = "Day"){
-pal<-pnw_palette("Lake",3, type = "discrete")  
-  if(Time == "Day"){
+ChemPlot<-function(data = ChemData, x, y, Time = "Day"){ # set up the function with a name and what data to use
+pal<-pnw_palette("Lake",3, type = "discrete")  # indicate what colors from the pallette to use
+  if(Time == "Day"){ # indicate what time of day we want to look at (the if statement for the function)
     data%>%
-      filter(Time == "Day")%>%
-    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+
-      geom_point()+
-      scale_color_manual("Site", values = pal)+
-      theme_bw()
+      filter(Time == "Day")%>% # filter only daytime out, not nighttime 
+    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+ # give the plot parameters
+      geom_point()+ # point plot
+      scale_color_manual("Site", values = pal)+ # set the color of the plot 
+      theme_bw() # change the theme 
 }
-else{
-  data %>%
-    filter(Time=="Night")
-    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+
-      geom_point()+
-      scale_color_manual("Site", values = pal)+
-      theme_bw()
+else{ # give the else statement 
+  data %>% 
+    filter(Time=="Night") # if not looking at day, look at night
+    ggplot(aes(x = {{x}}, y = {{y}} , color = Site))+ # indicate what aesthetics you want in your plot 
+      geom_point()+ #geom point
+      scale_color_manual("Site", values = pal)+ # indicate what color pallette to use
+      theme_bw() # change the theme
 }
 }
 ```
@@ -62,11 +62,11 @@ else{
 ## Test the Function
 ```{r}
 # Plot variations in pH based on zone
-ChemPlot(x = Zone, y = pH)+
-    labs(x = "Zone", 
-       y = "pH Scale")
+ChemPlot(x = Zone, y = pH)+ # to test, make a simple plot with x as zone, y as ph
+    labs(x = "Zone",  # label x axis
+       y = "pH Scale") # label y axis 
 # 
-ChemPlot(x = Tide_time, y = Temp_in)+
-    labs(x = "Time of Day)", 
-       y = "Temperature (C)")
+ChemPlot(x = Tide_time, y = Temp_in)+ # second test, make a plot with x as Tide time and Y as temp
+    labs(x = "Time of Day)", # label x axis
+       y = "Temperature (C)") # label y axis 
 ```
