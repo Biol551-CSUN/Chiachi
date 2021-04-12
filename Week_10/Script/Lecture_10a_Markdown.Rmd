@@ -1,0 +1,62 @@
+---
+title: "Lecture10a_Lecture"
+author: "Amanda"
+date: "4/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# If you're asking: What package or function should I use to do this thing?
+- Google it (add R software or .R to the end of your search)    
+- CRAN Task Views    
+
+# What should you look out for if there is something wrong?  
+- red x next to your code will show that there is an error   
+- Error (need to fix to run), Warning (will still run), or Message   
+- if you do not know how to fix the error message, google it!!   
+
+# Some common errors/issues to keep an eye out for
+- Error in _______: could not find function "__________"    
+  - this means the function hasn't been attached   
+  - maybe misspelled something   
+- Error in ____ %>% _____: could not find function "%"%   
+  - Make sure you ran the packages!!   
+- Error in ________ : object '______' not found    
+  - the object hasnt been created or stored   
+  - yoube mistyped the object name 
+- Warning: Ignoring unknown parameters: ________'
+  - use ?_____ to figure out if you spelled everything right
+  
+# Install Packages
+```{r}
+install.packages('reprex') #reproducible example
+install.packages('datapasta') #copy and paste
+install.packages('styler') # copy and paste in style
+```
+
+# Let's Practice 
+```{r}
+library(tidyverse)
+mpg %>%
+  ggplot(aes(x = displ, y = hwy))%>%
+  geom_point(aes(color = class))
+```
+
+# Use DataPasta 
+```{r}
+tibble::tribble(
+    ~lat,    ~long, ~star_no,
+  33.548, -117.805,      10L,
+  35.534, -121.083,       1L,
+  39.503, -123.743,      25L,
+  32.863,  -117.24,      22L,
+   33.46, -117.671,       8L
+  )
+```
+
+
+
+
