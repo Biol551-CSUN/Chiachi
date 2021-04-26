@@ -90,4 +90,49 @@ cond_data
 
 ## Mapping Functions #### 
 # this is to pile and add things together
+# map() makes a list.
+# map_lgl() makes a logical vector.
+# map_int() makes an integer vector.
+# map_dbl() makes a double vector.
+# map_chr() makes a character vector.
+# map_df() makes a dataframe
 
+# There are three ways to do the same thing in map() function
+# first create a vector
+1:10 # a vector from 1 to 10 (we are going to do this 10 times)
+# for each time 1:10 make a vector of 15 random numbers
+1:10 %>% # a vector from 1 to 10 (we are going to do this 10 times) %>% # the vector to iterate over
+  map(rnorm, n = 15) # calculate 15 random numbers based on a normal distribution in a list
+# calculate a mean for each of these random set of numbers
+1:10 %>% # a vector from 1 to 10 (we are going to do this 10 times) %>% # the vector to iterate over
+  map(rnorm, n = 15)  %>% # calculate 15 random numbers based on a normal distribution in a list 
+  map_dbl(mean) # calculate the mean. It is now a vector which is type "double"
+1:10 %>% # list 1:10
+  map(function(x) rnorm(15, x)) %>% # make your own function
+  map_dbl(mean)
+# use a formula when you want to change the arguments
+1:10 %>%
+  map(~ rnorm(15, .x)) %>% # changes the arguments inside the function
+  map_dbl(mean)
+# find the files
+# point to the location on the computer of the folder
+CondPath<-here("Week_13", "data", "cond_data")
+files <- dir(path = CondPath,pattern = ".csv")
+files
+# or we can get the full file names by 
+files <- dir(path = CondPath,pattern = ".csv", full.names = TRUE)
+#save the entire path name
+files
+# next read in the files using map instead o a for loop
+data<-files %>%
+  set_names()%>% # set's the id of each list to the file name
+  map_df(read_csv,.id = "filename") # map everything to a dataframe and put the id in a column called filename
+data
+# now we are just caluculating mean temp and salinity
+data<-files %>%
+  set_names()%>% # set's the id of each list to the file name
+  map_df(read_csv,.id = "filename") %>% # map everything to a dataframe and put the id in a column called filename
+  group_by(filename) %>%
+  summarise(mean_temp = mean(Temperature, na.rm = TRUE),
+            mean_sal = mean(Salinity,na.rm = TRUE))
+data
