@@ -87,3 +87,7 @@ for (i in 1:length(files)){ # loop over 1:3 the number of files
 } 
 cond_data
 # now we have a nice clean dataframe with summary statistics for each file
+
+## Mapping Functions #### 
+# this is to pile and add things together
+
