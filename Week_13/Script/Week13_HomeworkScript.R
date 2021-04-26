@@ -45,4 +45,4 @@ tide_data_purr<-files %>%
             sd_temp = sd(Temp.C,na.rm = TRUE),# to find the sd of temp
             mean_light = mean(Intensity.lux, na.rm = TRUE), # to find the mean intensity 
             sd_light = sd(Intensity.lux, na.rm = TRUE)) # to find the sd of the intensity 
-tide_data_purr
+tide_data_purr # this shows mean temp, sd_temp, mean_light, and sd_light (rounded)
