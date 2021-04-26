@@ -1,7 +1,7 @@
 # Chiachi
 Repo for Amanda Chiachis Assignments in BIOL551: Computer Modeling
 - [Week 2](Week_2).   
-- [Week 3](Week_3).   
+- [Week 3](Week_3).    
 - [Week 4](Week_4).   
 - [Week 5](Week_5).   
 - [Week 6](Week_6).   
@@ -9,4 +9,6 @@ Repo for Amanda Chiachis Assignments in BIOL551: Computer Modeling
 - [Good_Bad_Plot](Good_Bad_Plot). 
 - [Week_8](Week_8). 
 - [Week_10](Week_10). 
-- [Week_11](Week_11). 
+- [Week_11](Week_11).  
+- [Week_12](Week_12). 
+- [Week_13](Week_13).  
