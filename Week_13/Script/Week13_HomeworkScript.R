@@ -34,11 +34,10 @@ tide_data # this shows mean temp, sd_temp, mean_light, and sd_light
 #####The Purr Way####
 # bring in the files with purr instead of a for loop
 # point to the location on the computer of the folder
-files <- dir(path = TidePath,pattern = ".csv", full.names = TRUE)
-#save the entire path name
+files <- dir(path = TidePath,pattern = ".csv", full.names = TRUE) #save the entire path name
 files
 # read in the files using map instead of a for loop 
-data<-files %>%
+tide_data_purr<-files %>%
   set_names()%>% # set's the id of each list to the file name
   map_df(read_csv,.id = "filename")%>% # map everything to a dataframe and put the id in a column called filename
   group_by(filename) %>%
@@ -46,4 +45,4 @@ data<-files %>%
             sd_temp = sd(Temp.C,na.rm = TRUE),# to find the sd of temp
             mean_light = mean(Intensity.lux, na.rm = TRUE), # to find the mean intensity 
             sd_light = sd(Intensity.lux, na.rm = TRUE)) # to find the sd of the intensity 
-data 
+tide_data_purr
